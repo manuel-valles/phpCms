@@ -1,17 +1,17 @@
-admin/css/*
-!admin/css/sb-admin*
+/admin/css/*
+!/admin/css/sb-admin*
 
-admin/font-awesome
-admin/fonts
-admin/img
+/admin/font-awesome
+/admin/fonts
+/admin/img
 
-admin/js/*
-!admin/js/scripts.js
+/admin/js/*
+!/admin/js/scripts.js
 
-css/bootstrap*
-fonts
-img
-js
+/css/bootstrap*
+/fonts
+/img
+/js
 
 
 

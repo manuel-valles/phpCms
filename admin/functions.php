@@ -315,21 +315,30 @@ function insert_comment(){
 	global $connection;
 
 	if(isset($_POST['create_comment'])){
+
 		$post_id = $_GET['post_id'];
 		$comment_author = $_POST['comment_author'];
 		$comment_email = $_POST['comment_email'];
 		$comment_content = mysqli_escape_string($connection, $_POST['comment_content']);
 
-        $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-        $query .= "VALUES('{$post_id}', '{$comment_author}', '{$comment_email}', '{$comment_content}', 'Submitted', now())";
-		$insert_comment =  mysqli_query($connection, $query);
-        confirm_query($insert_comment);
+		// Add some validation
+		if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
+			$query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+	        $query .= "VALUES('{$post_id}', '{$comment_author}', '{$comment_email}', '{$comment_content}', 'Submitted', now())";
+			$insert_comment =  mysqli_query($connection, $query);
+	        confirm_query($insert_comment);
 
-        // Update count of comments every time we insert a comment
-        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
-		$query .= "WHERE post_id = {$post_id}";
-		$update_post = mysqli_query($connection, $query);
-		confirm_query($update_post);
+	        // Update count of comments every time we insert a comment
+	        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
+			$query .= "WHERE post_id = {$post_id}";
+			$update_post = mysqli_query($connection, $query);
+			confirm_query($update_post);
+
+			// Message for user
+			echo '<div class="alert alert-success"><b>Your comment has been submitted. We will review it shortly.</b></div>';
+		} else{
+			echo "<script>alert('Fields cannot be empty');</script>";
+		}
 	}
 }
 

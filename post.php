@@ -46,7 +46,6 @@
                 <hr>
                 <?php } ?>
                 <!-- Blog Comments -->
-                <?php insert_comment(); ?>
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
@@ -66,7 +65,8 @@
                         <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
                     </form>
                 </div>
-
+                <!-- Result Submit -->
+                <?php insert_comment(); ?>
                 <hr>
 
                 <!-- Posted Comments -->

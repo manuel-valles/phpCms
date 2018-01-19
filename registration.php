@@ -16,7 +16,6 @@
             
             //Validation
             if(!empty($username) && !empty($email) && !empty($password)){
-                
                 // Encrypt the password
                 $query = "SELECT randSalt FROM users";
                 $getSalt = mysqli_query($connection, $query);
@@ -68,7 +67,7 @@
                         </div>
                         <!-- Message after submit -->
                         <br>
-                        <?php echo $message; ?>
+                        <?php echo (isset($message))?$message:''; ?>
                     </div> <!-- /.col-xs-12 -->
                 </div> <!-- /.row -->
             </div> <!-- /.container -->

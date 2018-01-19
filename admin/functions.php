@@ -387,12 +387,14 @@ function display_users(){
 
 function insert_users(){
 
-	global $connection;
+	global $connection, $hashed_password;
 	
 	if(isset($_POST['create_user'])){
 
 		$username = $_POST['username'];
 		$user_password = mysqli_escape_string($connection, $_POST['user_password']);
+		// Encrypt the password
+		encrypt_password($user_password);
 		$user_firstname = $_POST['user_firstname'];
 		$user_lastname = $_POST['user_lastname'];
 		$user_email = $_POST['user_email'];
@@ -406,7 +408,7 @@ function insert_users(){
 		move_uploaded_file($user_img_tmp, "img/$user_img");
 		
 		$query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_img, user_role, user_registration) ";
-		$query .= "VALUES('{$username}', '{$user_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_img}', '{$user_role}', now())";
+		$query .= "VALUES('{$username}', '{$hashed_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_img}', '{$user_role}', now())";
 
 		$query_add_user = mysqli_query($connection, $query);
         
@@ -586,6 +588,48 @@ function count_data($tableDB, $optWhere = ''){
 	confirm_query($count_rows);
 	$count = mysqli_num_rows($count_rows);
 	return $count;
+}
+
+function register_user(){
+	global $connection, $message, $hashed_password;
+	if(isset($_POST['submit'])){
+	    //Take data submitted
+	    $username =  $_POST['username'];
+	    $email =  $_POST['email'];
+	    $password =  $_POST['password'];
+	    //Escape that data before insert it into the DB
+	    $username = mysqli_real_escape_string($connection, $username);
+	    $email = mysqli_real_escape_string($connection, $email);
+	    $password = mysqli_real_escape_string($connection, $password);
+	    
+	    //Validation
+	    if(!empty($username) && !empty($email) && !empty($password)){
+	        // Encrypt the password
+	        encrypt_password($password);
+
+	        $query = "INSERT INTO users(username, user_password, user_email, user_role) ";
+	        $query .= "VALUES ('$username', '$hashed_password', '$email', 'subscriber')";
+	        $newUser = mysqli_query($connection, $query);
+	        confirm_query($newUser);
+	        //Message for the user
+	        $message = '<div class="alert alert-success">Your Registration has been submitted.</div>';
+	    } else {
+	        //Alert with JS
+	        $message = '<script>alert("Fields cannot be empty!")</script>';
+	    }
+	}
+}
+
+function encrypt_password($password){
+	global $connection, $hashed_password;
+	$query = "SELECT randSalt FROM users";
+	$getSalt = mysqli_query($connection, $query);
+	confirm_query($getSalt);
+	$row = mysqli_fetch_array($getSalt);
+	//If the randSalt were empty, it would take the default value added into the DB
+	$salt = $row['randSalt'];
+	//Apply the crypt function
+	$hashed_password = crypt($password, $salt);
 }
 
 ?>

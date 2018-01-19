@@ -3,41 +3,8 @@
     <!-- Navigation -->    
     <?php  include "includes/nav.php"; ?>
     
-    <?php 
-        if(isset($_POST['submit'])){
-            //Take data submitted
-            $username =  $_POST['username'];
-            $email =  $_POST['email'];
-            $password =  $_POST['password'];
-            //Escape that data before insert it into the DB
-            $username = mysqli_real_escape_string($connection, $username);
-            $email = mysqli_real_escape_string($connection, $email);
-            $password = mysqli_real_escape_string($connection, $password);
-            
-            //Validation
-            if(!empty($username) && !empty($email) && !empty($password)){
-                // Encrypt the password
-                $query = "SELECT randSalt FROM users";
-                $getSalt = mysqli_query($connection, $query);
-                confirm_query($getSalt);
-                $row = mysqli_fetch_array($getSalt);
-                //If the randSalt were empty, it would take the default value added into the DB
-                $salt = $row['randSalt'];
-                //Apply the crypt function
-                $password = crypt($password, $salt);
 
-                $query = "INSERT INTO users(username, user_password, user_email, user_role) ";
-                $query .= "VALUES ('$username', '$password', '$email', 'subscriber')";
-                $newUser = mysqli_query($connection, $query);
-                confirm_query($newUser);
-                //Message for the user
-                $message = '<div class="alert alert-success">Your Registration has been submitted.</div>';
-            } else {
-                //Alert with JS
-                $message = '<script>alert("Fields cannot be empty!")</script>';
-            }
-        }
-    ?>
+    <?php register_user() ?>
 
     <!-- Page Content -->
     <div class="container">

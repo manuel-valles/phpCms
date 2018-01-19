@@ -27,6 +27,9 @@ if (isset($_POST['login'])) {
 	// $user_img = $user['user_img'];
 	// $user_registration = $user['user_registration'];
 	// $randSalt = $user['randSalt'];
+	
+	// If matches, it will return the encrypted password
+	$user_password = crypt($user_password, $db_user_password);
 
 	if ($username === $db_username && $user_password === $db_user_password) {
 		// Set up session

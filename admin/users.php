@@ -13,9 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome To Admin
-                            <small>User</small>
-                        </h1>
+                            Users
                         <?php 
                         if(isset($_GET['source'])){
                             $source = $_GET['source'];
@@ -24,14 +22,17 @@
                         }
                         switch ($source) {
                             case 'add_user':
+                                echo "<small>- Create</small></h1>";
                                 include "includes/add_user.php";
                                 break;
                             
                             case 'edit_user':
+                                echo "<small>- Edit</small></h1>";
                                 include "includes/edit_user.php";
                                 break;
 
                             default:
+                                echo "</h1>";
                                 include "includes/display_all_users.php";
                                 change_to_admin();
                                 change_to_subscriber();

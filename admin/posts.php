@@ -13,9 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome To Admin
-                            <small>User</small>
-                        </h1>
+                            Posts
                         <?php 
                         if(isset($_GET['source'])){
                             $source = $_GET['source'];
@@ -24,20 +22,24 @@
                         }
                         switch ($source) {
                             case 'add_post':
+                                echo "<small>- Create</small></h1>";
                                 include "includes/add_post.php";
                                 break;
                             
                             case 'edit_post':
+                                echo "<small>- Edit</small></h1>";
                                 include "includes/edit_post.php";
                                 break;
 
                             default:
+                                echo "</h1>";
                                 include "includes/display_all_posts.php";
                                 delete_posts();
                                 break;
                         }                              
 
                         ?>
+
                     </div>
                 </div>
                 <!-- /.row -->

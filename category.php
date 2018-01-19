@@ -11,15 +11,16 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
-
                 <!-- First Blog Post -->
                 <?php
-                if (isset($_GET['cat_id'])) {
+                if (isset($_GET['cat_id']) && isset($_GET['cat_title'])) {
                     $post_category_id = $_GET['cat_id'];
+                    $cat_title = $_GET['cat_title'];
+                ?>
+                    <h1 class="page-header">
+                        <?= $cat_title; ?>
+                    </h1>
+                <?php
                     $query = "SELECT * FROM posts WHERE post_category_id = {$post_category_id}";
                     $select_post = mysqli_query($connection, $query);
 

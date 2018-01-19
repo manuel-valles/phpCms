@@ -48,7 +48,7 @@
                                 while ($row = mysqli_fetch_assoc($query)) {
                                     $cat_id = $row['cat_id'];
                                     $cat_title = $row['cat_title'];
-                                    echo "<li><a href='category.php?cat_id=$cat_id'>$cat_title</a></li>";
+                                    echo "<li><a href='category.php?cat_id=$cat_id&cat_title=$cat_title'>$cat_title</a></li>";
                                 }
                             ?>
                             </ul>

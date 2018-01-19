@@ -44,7 +44,7 @@ function display_categories(){
 	    		<td>{$cat_id}</td>
 	    		<td>{$cat_title}</td>
 			    <td><a href='categories.php?edit_id={$cat_id}&edit_title={$cat_title}'>Edit</a></td>
-			    <td><a href='categories.php?delete={$cat_id}'>Delete</a></td>
+			    <td><a onclick=\"return confirm('Are you sure you want to delete the category with id {$cat_id}?')\" href='categories.php?delete={$cat_id}'>Delete</a></td>
 			</tr>";
 	}
 }
@@ -114,7 +114,7 @@ function display_posts(){
 	    		<td>{$post_comment_count}</td>
 	    		<td>{$post_date}</td>
 	    		<td><a href='posts.php?source=edit_post&post_id={$post_id}'>Edit</a></td>
-	    		<td><a href='posts.php?delete={$post_id}'>Delete</a></td>
+	    		<td><a onclick=\"return confirm('Are you sure you want to delete the post with id {$post_id}?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
 			</tr>";
 	}
 }
@@ -268,7 +268,7 @@ function display_comments(){
 	    		<td>{$comment_date}</td>
 	    		<td><a href='comments.php?approve={$comment_id}'>Approved</a></td>
 	    		<td><a href='comments.php?disapprove={$comment_id}'>Unapproved</a></td>
-	    		<td><a href='comments.php?delete={$comment_id}'>Delete</a></td>
+	    		<td><a onclick=\"return confirm('Are you sure you want to delete the comment with id {$comment_id}?')\"  href='comments.php?delete={$comment_id}'>Delete</a></td>
 			</tr>";
 	}
 }
@@ -380,7 +380,7 @@ function display_users(){
 	    		<td><a href='users.php?toAdmin={$user_id}'>Admin</a></td>
 	    		<td><a href='users.php?toSubscriber={$user_id}'>Subscriber</a></td>
 	    		<td><a href='users.php?source=edit_user&user_id={$user_id}'>Edit</a></td>
-	    		<td><a href='users.php?delete={$user_id}'>Delete</a></td>
+	    		<td><a onclick=\"return confirm('Are you sure you want to delete the user with id {$user_id}?')\" href='users.php?delete={$user_id}'>Delete</a></td>
 			</tr>";
 	}
 }

@@ -35,6 +35,8 @@
   </div>
   <button class="btn btn-primary" type="submit" name="update_user">Update</button>
 </form>
+<br>
+<?php echo $message; ?>
 
 
 

@@ -460,7 +460,7 @@ function change_to_subscriber(){
 }
 
 function edit_user(){
-	global $connection, $user_firstname, $user_lastname, $username, $user_email, $db_user_password, $user_role, $user_img;
+	global $connection, $user_firstname, $user_lastname, $username, $user_email, $db_user_password, $user_role, $user_img, $message;
 
 	if(isset($_GET['user_id'])){
 	    $user_id = $_GET['user_id'];
@@ -489,7 +489,7 @@ function edit_user(){
 		$user_password = mysqli_escape_string($connection, $_POST['user_password']);
 		//Encrypt the password if the user changes it
 		if($db_user_password !== $user_password){
-			$user_password = crypt($user_password, $user_randSalt);
+			$db_user_password = crypt($user_password, $user_randSalt);
 		}
 		$user_role = $_POST['user_role'];
 
@@ -513,20 +513,23 @@ function edit_user(){
 		$query .= "username = '{$username}', ";
 		$query .= "user_email = '{$user_email}', ";
 		$query .= "user_img = '{$user_img}', ";
-		$query .= "user_password = '{$user_password}', ";
+		$query .= "user_password = '{$db_user_password}', ";
 		$query .= "user_role = '{$user_role}' ";
 		$query .= "WHERE user_id = {$user_id}";
 		
 		$update_user = mysqli_query($connection, $query);
 		confirm_query($update_user);
 
-		// I want to go to view all post after every update
-	    header("Location: users.php");
+		//Message for the Admin
+		echo "<div class='alert alert-success'>
+    		<p><strong>User updated successfully</strong></p>
+    		<p><a href='users.php'>Edit More Users</a></p>
+    		</div>";
 	}
 }
 
 function edit_profile(){
-	global $connection, $user_firstname, $user_lastname, $username, $user_email, $user_password, $user_role, $user_img;
+	global $connection, $user_firstname, $user_lastname, $username, $user_email, $db_user_password, $user_img, $message;
 
 	if(isset($_SESSION['user_id'])){
 	    $user_id = $_SESSION['user_id'];
@@ -538,9 +541,10 @@ function edit_profile(){
         $user_lastname = $user['user_lastname'];
         $username = $user['username'];
         $user_email = $user['user_email'];
-        $user_password = $user['user_password'];
+        $db_user_password = $user['user_password'];
         $user_role = $user['user_role'];
         $user_img = $user['user_img'];
+        $user_randSalt = $user['randSalt'];
 	}
 
 	if(isset($_POST['update_profile'])){
@@ -552,6 +556,10 @@ function edit_profile(){
 		$user_img = $_FILES['user_img']['name'];
 		$user_img_tmp = $_FILES['user_img']['tmp_name'];
 		$user_password = mysqli_escape_string($connection, $_POST['user_password']);
+		//Encrypt the password if the user changes it
+		if($db_user_password !== $user_password){
+			$db_user_password = crypt($user_password, $user_randSalt);
+		}
 
 	    // move_uploaded_file(filename, destination)
 		move_uploaded_file($user_img_tmp, "../img/$user_img");
@@ -573,11 +581,15 @@ function edit_profile(){
 		$query .= "username = '{$username}', ";
 		$query .= "user_email = '{$user_email}', ";
 		$query .= "user_img = '{$user_img}', ";
-		$query .= "user_password = '{$user_password}' ";
+		$query .= "user_password = '{$db_user_password}' ";
 		$query .= "WHERE user_id = {$user_id}";
 		
 		$update_user = mysqli_query($connection, $query);
 		confirm_query($update_user);
+		//Message for the user
+		$message = '<div class="alert alert-success">Your Profile has been updated successfully.</div>';
+	}else{
+		$message = '';
 	}
 }
 

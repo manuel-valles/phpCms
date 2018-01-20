@@ -37,7 +37,7 @@
                           </div>
                           <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" name="user_password" value="<?php echo  $user_password; ?>">
+                            <input type="password" class="form-control" name="user_password" value="<?php echo  $db_user_password; ?>">
                           </div>
                           <div class="form-group">
                             <label for="img">Image</label>
@@ -49,6 +49,9 @@
                     </div>
                 </div>
                 <!-- /.row -->
+                <!-- Message after submit -->
+                <br>
+                <?= $message; ?>
 
             </div>
             <!-- /.container-fluid -->

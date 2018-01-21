@@ -68,18 +68,37 @@ function display_posts(){
 		$bulkOption = $_POST['bulkOption'];
 		if($bulkOption !==""){
 			foreach($checkBoxArray as $checkBoxValue){
-				if($bulkOption === "delete"){
-					$query = "DELETE FROM posts ";
-				} else{
-					$query = "UPDATE posts SET post_status = '{$bulkOption}' ";
+				switch($bulkOption){
+					case "delete":
+						$query = "DELETE FROM posts WHERE post_id = $checkBoxValue";
+						$delete_post = mysqli_query($connection, $query);
+						confirm_query($delete_post);
+						break;
+					case "clone":
+						$query1 = "CREATE TEMPORARY TABLE tmpposts SELECT * FROM posts WHERE post_id = $checkBoxValue";
+						$create_tmptable = mysqli_query($connection, $query1);
+						confirm_query($create_tmptable);
+						$query2 = "UPDATE tmpposts SET post_id = NULL";
+						$clear_tmptable = mysqli_query($connection, $query2);
+						confirm_query($clear_tmptable);
+						$query3 = "INSERT INTO posts SELECT * FROM tmpposts";
+						$insert_into_posts = mysqli_query($connection, $query3);
+						confirm_query($insert_into_posts);
+						$query4 = "DROP TEMPORARY TABLE IF EXISTS tmpposts";
+						$drop_tmptable = mysqli_query($connection, $query4);
+						confirm_query($drop_tmptable);
+						break;
+					default:
+						$query = "UPDATE posts SET post_status = '{$bulkOption}' WHERE post_id = $checkBoxValue";
+						$update_status = mysqli_query($connection, $query);
+						confirm_query($update_status);
+						break;
 				}
-				$query .= "WHERE post_id = $checkBoxValue";
-				$update_status = mysqli_query($connection, $query);
-				confirm_query($update_status);
 			}
 		}
 	}
-    $query = "SELECT * FROM posts";
+	// ORDER BY post_id DESC to display the newest posts on the top
+    $query = "SELECT * FROM posts ORDER BY post_id DESC";
     $select_posts = mysqli_query($connection, $query); 
 
     while ($row = mysqli_fetch_assoc($select_posts)) {

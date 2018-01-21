@@ -7,6 +7,7 @@
                     <option value="published">Published</option>
                     <option value="draft">Draft</option>
                     <option value="delete">Delete</option>
+                    <option value="clone">Clone</option>
                 </select>
             </div>
             <button class="btn btn-warning" type="submit" name="bulkSubmit">Apply</button>

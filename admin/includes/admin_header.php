@@ -54,3 +54,5 @@
 </head>
 
 <body>
+    <!-- Loader Feature -->
+    <div id="loading"><img src="img/loader.gif" alt="loader-gif" width="300" /></div>

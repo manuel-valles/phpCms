@@ -111,6 +111,7 @@ function display_posts(){
         $post_content = substr($row['post_content'], 0, 30) . '<span>...</span>';
         $post_tags = $row['post_tags'];
         $post_comment_count = $row['post_comment_count'];
+        $post_views = $row['post_views'];
         $post_status = $row['post_status'];
 		
 		$query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
@@ -131,11 +132,13 @@ function display_posts(){
 	    		<td>{$post_content}</td>
 	    		<td>{$post_tags}</td>
 	    		<td>{$post_comment_count}</td>
+	    		<td><a onclick=\"return confirm('Reset the count of views for the post with id {$post_id}?')\" href='?reset_views={$post_id}'>{$post_views}</a></td>
 	    		<td>{$post_date}</td>
 	    		<td><a href='posts.php?source=edit_post&post_id={$post_id}'>Edit</a></td>
 	    		<td><a onclick=\"return confirm('Are you sure you want to delete the post with id {$post_id}?')\" href='posts.php?delete={$post_id}'>Delete</a></td>
 			</tr>";
 	}
+
 }
 
 function insert_posts(){
@@ -179,13 +182,26 @@ function insert_posts(){
 
 }
 
-function delete_posts(){
+function delete_post(){
 	global $connection;
 
 	if(isset($_GET['delete'])){
 	    $delete = $_GET['delete'];
 	    $query = mysqli_query($connection, "DELETE FROM posts WHERE post_id={$delete}");
 	    // To refresh the page : it avoids manually refreshes
+	    header("Location: posts.php");
+	}
+}
+
+function reset_views_post(){
+	global $connection;
+	if(isset($_GET['reset_views'])){
+		$post_id = $_GET['reset_views'];
+		$post_id = mysqli_real_escape_string($connection, $post_id);
+		$query = "UPDATE posts SET post_views = 0 WHERE post_id = {$post_id}";
+		$reset_post_views = mysqli_query($connection, $query);
+		confirm_query($reset_post_views);
+		// To update the page
 	    header("Location: posts.php");
 	}
 }

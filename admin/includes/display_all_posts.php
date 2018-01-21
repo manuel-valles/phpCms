@@ -25,6 +25,7 @@
                 <th>Content</th>
                 <th>Tags</th>
                 <th>Comments</th>
+                <th>Views</th>
                 <th>Date</th>
                 <th colspan="2">Modify</th>
             </tr>

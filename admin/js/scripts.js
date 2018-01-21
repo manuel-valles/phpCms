@@ -19,7 +19,7 @@ $(function(){
 	// Prepend would be slower - It has been added to admin-header
 	// var loading = '<div id="loading"><img src="img/loader.gif" alt="loader-gif"/></div>';
 	// $('body').prepend(loading);
-	$('#loading').delay(800).fadeOut(600, function(){
+	$('#loading').delay(300).fadeOut(400, function(){
 		$(this).remove();
 	});
 });

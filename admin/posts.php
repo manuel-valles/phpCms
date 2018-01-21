@@ -34,7 +34,8 @@
                             default:
                                 echo "</h1>";
                                 include "includes/display_all_posts.php";
-                                delete_posts();
+                                reset_views_post();
+                                delete_post();
                                 break;
                         }                              
 

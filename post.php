@@ -15,6 +15,11 @@
                 <?php
                 if (isset($_GET['post_id'])) {
                     $post_id = $_GET['post_id'];
+                    //Count every time somebody access to the post - this code is executed
+                    $query = "UPDATE posts SET post_views = post_views + 1 ";
+                    $query .= "WHERE post_id = {$post_id}";
+                    $update_post_views = mysqli_query($connection, $query);
+                    confirm_query($update_post_views);
                     $query = "SELECT * FROM posts WHERE post_id = {$post_id}";
                     $select_post = mysqli_query($connection, $query);
                     confirm_query($select_post);

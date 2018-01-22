@@ -16,8 +16,33 @@
                 </h1>
 
                 <!-- First Blog Post -->
-                <?php  
-                $query = mysqli_query($connection, "SELECT * FROM posts WHERE post_Status = 'published'");
+                <?php
+
+                // To limit the pagination I need to know how many published posts are
+                $query =  "SELECT * FROM posts WHERE post_Status = 'published'";
+                $published_posts = mysqli_query($connection, $query);
+                confirm_query($published_posts);
+                $count_rows = mysqli_num_rows($published_posts);
+                // Set how many posts we want per page
+                $posts_per_page = 5;
+                // Get how many posts would be after that limit - Ceil for no float
+                $pages = ceil($count_rows / $posts_per_page);
+                // Check we don't get an undefined page
+                if(isset($_GET['page'])){
+                    $page = $_GET['page'];
+                } else{
+                    $page = "";
+                }
+                // Assign a variable - $post_1 - to add it to the LIMIT query
+                if($page == ""  || $page == 1){
+                    // The value is 0 for the homepage
+                    $post_1 = 0;
+                } else{
+                    $post_1 = ($page * $posts_per_page) - $posts_per_page;
+                }
+
+                // Set this variable to the start LIMIT - dynamically
+                $query = mysqli_query($connection, "SELECT * FROM posts WHERE post_Status = 'published' LIMIT $post_1, $posts_per_page");
                 confirm_query($query);
                 while($post = mysqli_fetch_assoc($query)){
 
@@ -54,6 +79,15 @@
         <!-- /.row -->
 
         <hr>
-
+        
+        <!-- Pagination -->
+        <ul class="pager">
+            <?php
+                // Loop to get the pages - class 'pager' from Bootstrap v3
+                for($i=1; $i<=$pages; $i++){
+                    echo "<li><a href='?page={$i}'>{$i}</a></li>";
+                }
+            ?>
+        </ul>
         <!-- Footer -->
         <?php include "includes/footer.php" ?>
